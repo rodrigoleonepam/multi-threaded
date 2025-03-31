@@ -1,2 +1,7 @@
-com\epam\task\WordCount.class
+com\epam\task\ParallelStream.class
 com\epam\task\AsynchronousFileProcessing.class
+com\epam\task\CustomCollector.class
+com\epam\task\CacheItem.class
+com\epam\task\SingletonPattern.class
+com\epam\task\WordCount.class
+com\epam\task\LRUCache.class

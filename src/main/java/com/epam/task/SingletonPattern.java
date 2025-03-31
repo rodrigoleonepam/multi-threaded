@@ -8,6 +8,10 @@ public class SingletonPattern {
     
     private static final SingletonPattern instance = new SingletonPattern();
 
+    private SingletonPattern() {
+        // private constructor to prevent instantiation
+    }
+
     public static SingletonPattern getInstance() {
         return instance;
     }

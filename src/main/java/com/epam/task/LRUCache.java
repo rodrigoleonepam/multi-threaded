@@ -8,25 +8,35 @@ import java.util.LinkedHashMap;
  */
 public class LRUCache {
 
-    private LinkedHashMap<String, String> cache;
+    private LinkedHashMap<String, CacheItem> cache;
 
     public LRUCache() {
         cache = new LinkedHashMap<>();
     }
 
-    public void put(String key, String value) {
+    public void put(String key, CacheItem value) {
+        value.setTtl(System.currentTimeMillis() + value.getTtl());
         cache.put(key, value);
     }
 
-    public String get(String key) {
+    public CacheItem get(String key) {
+        long currentTime = System.currentTimeMillis();
+        CacheItem item = cache.get(key);
+        if (item == null || item.getTtl() < currentTime) {
+            cache.remove(key);
+            item.setValue(null);
+            return item;
+        }
         return cache.get(key);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         LRUCache cache = new LRUCache();
-        cache.put("hello", "world");
-        cache.put("foo", "bar");
-        System.out.println("Cache: " + cache.get("foo"));
+        cache.put("hello", new CacheItem("world", 60000)); // 1 minute TTL
+        cache.put("expired", new CacheItem("expired", 10)); // 10 ms TTL
+        Thread.sleep(10000); // Simulate time passing
+        System.out.println("Cache: " + cache.get("hello").getValue());
+        System.out.println("Cache: " + cache.get("expired").getValue());
     }
 
 }
